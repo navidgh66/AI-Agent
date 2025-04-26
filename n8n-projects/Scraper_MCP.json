@@ -1,0 +1,180 @@
+{
+  "name": "Scraper-MCP",
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "initialMessages": "How can I assist you with summarizing news or blog post? just give me the url and ask for what to summarize",
+        "options": {
+          "title": "Hi there! Navid is here to help...! 👋"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -300,
+        -60
+      ],
+      "id": "df320fb2-9751-4153-a1ed-aca57083610b",
+      "name": "When chat message received",
+      "webhookId": "78fbd66a-7c54-4bc3-8e7f-6b50c2a481db"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -180,
+        160
+      ],
+      "id": "fcbc4124-3598-4150-90f6-537e7336a6df",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "cS5vUTPsD7FPbe4c",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -20,
+        160
+      ],
+      "id": "a89eeda2-b8a2-4b78-9b62-3fc8a5a034c1",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-mcp.mcpClientTool",
+      "typeVersion": 1,
+      "position": [
+        120,
+        160
+      ],
+      "id": "24bca516-add6-4a0f-a5a3-349276fea16f",
+      "name": "Firecrawl-tools-list",
+      "credentials": {
+        "mcpClientApi": {
+          "id": "cmrIkuB7lGOV4QoX",
+          "name": "Firecrawl"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeTool",
+        "toolName": "={{ $fromAI(\"tool\", \"the selected tool for executing the action\")}}",
+        "toolParameters": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Tool_Parameters', ``, 'json') }}"
+      },
+      "type": "n8n-nodes-mcp.mcpClientTool",
+      "typeVersion": 1,
+      "position": [
+        280,
+        160
+      ],
+      "id": "63014ade-33e5-42ff-866e-10a576c33515",
+      "name": "Firecrawl-Execute-tool",
+      "credentials": {
+        "mcpClientApi": {
+          "id": "cmrIkuB7lGOV4QoX",
+          "name": "Firecrawl"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "You are an intelligent assistant.\n-Use Firecrawl via the MCP interface to fulfill user requests.\n-Begin by calling listTools to retrieve all available tools.\n- Analyze the user’s intent, choose the most appropriate tool from the list, and call executeTool using the correct tool name and required parameters."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        12,
+        -60
+      ],
+      "id": "8886d356-6009-4ab9-b489-44a9916fac39",
+      "name": "Scraper Agent"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Scraper Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Scraper Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Scraper Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Firecrawl-tools-list": {
+      "ai_tool": [
+        [
+          {
+            "node": "Scraper Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Firecrawl-Execute-tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "Scraper Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "bbcc5778-20b7-4020-a844-907fba055c69",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "b5504705e014d80f3dc3b308fe05e96254f5a70f31a2c0ef2519f8e467e8c4d6"
+  },
+  "id": "WwUFD2VOKmUhAh6Q",
+  "tags": []
+}

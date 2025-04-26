@@ -1,0 +1,304 @@
+{
+  "name": "MCP-Demo",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -240,
+        -100
+      ],
+      "id": "df43ea61-ede7-4fa3-ae05-96f40df52323",
+      "name": "When chat message received",
+      "webhookId": "e194c5f5-2d68-4f66-97c7-c9d786e0463e"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -80,
+        140
+      ],
+      "id": "392af49f-aa7f-4cf2-9cb0-c2a89a4e4759",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "uE6r1Z5F9lyyXlNO",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        100,
+        160
+      ],
+      "id": "7f49b646-3a67-4d0f-a2f8-7b7d1db46003",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        -20,
+        -100
+      ],
+      "id": "addac4cd-57ab-4deb-bfb3-81b973e253dd",
+      "name": "AI Agent - Scraper"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -60,
+        -240
+      ],
+      "id": "cda47104-fd15-4671-8bd7-26275c3c56da",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "uE6r1Z5F9lyyXlNO",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        80,
+        -240
+      ],
+      "id": "43139b74-6e26-4445-8d0f-faf96c61ab1a",
+      "name": "Simple Memory1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        -40,
+        -520
+      ],
+      "id": "8e13fd5c-8015-4c46-8f88-fc5fed501c08",
+      "name": "AI Agent - Search"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-mcp.mcpClientTool",
+      "typeVersion": 1,
+      "position": [
+        240,
+        140
+      ],
+      "id": "ce31dc52-4671-49a1-8c59-f4d6e48a1880",
+      "name": "FireCrawl-List",
+      "credentials": {
+        "mcpClientApi": {
+          "id": "PZDh1uENBY0wdbyq",
+          "name": "FireCrawl"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeTool",
+        "toolName": "={{ $fromAI('tool','selected tool to execute') }}",
+        "toolParameters": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Tool_Parameters', ``, 'json') }}"
+      },
+      "type": "n8n-nodes-mcp.mcpClientTool",
+      "typeVersion": 1,
+      "position": [
+        440,
+        120
+      ],
+      "id": "deef57b0-7376-4126-b50a-cc9824b0b1de",
+      "name": "FireCrawl-Executer",
+      "credentials": {
+        "mcpClientApi": {
+          "id": "PZDh1uENBY0wdbyq",
+          "name": "FireCrawl"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-mcp.mcpClientTool",
+      "typeVersion": 1,
+      "position": [
+        220,
+        -240
+      ],
+      "id": "0cbdaf78-6e2a-4086-9e6a-d20d7f522857",
+      "name": "Brave-list",
+      "credentials": {
+        "mcpClientApi": {
+          "id": "EpBOTvrsPobkVK7x",
+          "name": "Brave"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeTool",
+        "toolName": "={{ $fromAI('tool','selected tool to execute') }}",
+        "toolParameters": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Tool_Parameters', ``, 'json') }}"
+      },
+      "type": "n8n-nodes-mcp.mcpClientTool",
+      "typeVersion": 1,
+      "position": [
+        420,
+        -340
+      ],
+      "id": "10e26193-e716-4f8c-856a-c92946c8467e",
+      "name": "Brave Executer",
+      "credentials": {
+        "mcpClientApi": {
+          "id": "EpBOTvrsPobkVK7x",
+          "name": "Brave"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent - Search",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent - Scraper",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent - Scraper",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent - Search",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory1": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent - Search",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FireCrawl-List": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent - Scraper",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FireCrawl-Executer": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent - Scraper",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Brave-list": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent - Search",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Brave Executer": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent - Search",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "fae8675f-0249-4ec7-83cd-5ce248ba49a4",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "50677de177dd494373a655c1533dc7f4a56ce19582e20ec1d697f1fb5df916aa"
+  },
+  "id": "oNXudyMPR08nw2LY",
+  "tags": []
+}
